@@ -109,3 +109,32 @@ switchport access vlan
 
 do wr
 ```
+
+## Настройка на Kali Linux
+
+После изменений в файле `/etc/network/interfaces` сеть Kali имеет следующее состояние.
+
+![](./image/nets2-8-17.png)
+
+После перезабуска сети (`service networking restart`) Kali Linux должен успешно пинговать Linux Shared.
+
+![](./image/nets2-8-18.png)
+
+Во время настройки может возникать следующая ошибка
+
+```
+-Job for networking.service failed because the control process exited with error code. 
+See "systemctl status networking.service" and "journalctl -xe" for details.
+```
+
+для решения необходимо либо ещё раз перезагрузить сеть, либо проверить правильность вписанных конфигураций на коммутаторе, Linux Shared или Kali Linux.
+
+Аналагичную настройку следует провести на втором Kali.
+
+## На сервере
+
+Поменять в файле `/etc/openvpn/server.conf` `dev tun` на `dev tap` так мы обозначаем работу на уровне L2. Удаляем строки с `push`.
+
+
+
+**! Не получается установить клиент OpenVPN. Остановился на 56 минуте видео.**
