@@ -6,7 +6,13 @@
 
 ---
 
+ **BGP** (англ. Border Gateway Protocol, протокол граничного шлюза) - протокол динамической маршрутизации, относится к классу протоколов маршрутизации внешнего шлюза (англ. EGP — External Gateway Protocol), на текущий момент является основным протоколом динамической маршрутизации в сети Интернет.
+
+[Подробнее о работе протокола в статье](https://habr.com/ru/post/450814/)
+
 ![](./image/nets5.png)
+
+## Настройка BGP на CISCO
 
 ```
 router bgp 400
@@ -29,6 +35,8 @@ neighbor 13.1.3.28 next-hop-self
 neighbor 15.1.1.10 remote-as 300
 neighbor 16.1.1.100 remote-as 100
 ```
+
+## Настройка BGP на Microtik
 
 ```
 /interface bridge
