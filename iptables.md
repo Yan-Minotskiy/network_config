@@ -229,3 +229,5 @@ iptables -t filter -D FORWARD -d 192.168.175.136 -j ACCEPT
 ## Настройка в PC
 
 ![](./image/nets2-1-13.png)
+
+После этого необходимо внести небольшие правки в iptables и всё заработает!

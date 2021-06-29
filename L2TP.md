@@ -2,14 +2,12 @@
 
 [**Все лабораторные работы по сетям и системам передачи данных**](./README.md)
 
-## Теоретическая справка
+# L2TP 
 
 **Layer 2 Tunneling Protocol (L2TP)** был впервые предложен в 1999 году в качестве обновления протоколов L2F (Cisco) и  PPTP (Microsoft). Поскольку L2TP сам по себе не обеспечивает шифрование или аутентификацию, часто с ним используется IPsec. L2TP в паре с IPsec поддерживается многими операционными системами, стандартизирован в RFC 3193. L2TP/IPsec считается безопасным и не имеет серьезных выявленных проблем (гораздо безопаснее, чем PPTP). L2TP/IPsec может использовать шифрование 3DES или AES, хотя, учитывая, что 3DES в настоящее время считается слабым шифром, он используется редко. У протокола L2TP иногда возникают проблемы из-за использования по умолчанию UDP-порта 500, который, как известно, блокируется некоторыми брандмауэрами. Протокол L2TP/IPsec позволяет обеспечить высокую безопасность передаваемых данных, прост в настройке и поддерживается всеми современными операционными системами. Однако L2TP/IPsec инкапсулирует передаваемые данные дважды, что делает его менее эффективным и более медленным, чем другие VPN-протоколы.
 
 **LNS (L2TP Network Server)** - сервер доступа к локальной сети.  
 **LAC (L2TP Access Concentrator)** - устройство для прозрачного подключения пользователя к серверу (клиент дозванивается до LAC, LAC прокладывает тунель к LNS c ppp соединением). Иногда LAC сам выступает в роли клиента. В лабораторной мы рассмотрим этот случай.
-
-**Internet Protocol Security (IPsec)** — это набор протоколов для обеспечения защиты данных, передаваемых по IP-сети. В отличие от SSL, который работает на прикладном уровне, IPsec работает на сетевом уровне и может использоваться нативно со многими операционными системами, что позволяет использовать его без сторонних приложений (в отличие от OpenVPN). IPsec стал очень популярным протоколом для использования в паре с L2TP или IKEv2.
 
 Выше представлены фрагменты статьи c Хабра.  
 [Полную статью можно посмотреть здесь.](https://habr.com/ru/company/dsec/blog/499718/)
@@ -156,38 +154,60 @@ sh vpdn
 sh l2tp session
 ```
 
-# Настройка IPsec
+# IPsec
+
+**Internet Protocol Security (IPsec)** — это набор протоколов для обеспечения защиты данных, передаваемых по IP-сети. В отличие от SSL, который работает на прикладном уровне, IPsec работает на сетевом уровне и может использоваться нативно со многими операционными системами, что позволяет использовать его без сторонних приложений (в отличие от OpenVPN). IPsec стал очень популярным протоколом для использования в паре с L2TP или IKEv2.
 
 ## Настройка IPsec на сервере (Unit)
 
+Создаём политики ipsec
+
 ```
-conf t
 crypto isakmp policy 1
 encr aes 128
 authentication pre-share
 group 5
 hash sha
 ex
+```
 
+Авторизация по ключу. Нули в адресе записаны потому, что мы хотим, чтобы пиры подключались откуда угодно.
+
+```
 crypto keyring KER-L2TP
 pre-shared-key address 0.0.0.0 0.0.0.0 key secret
 ex
+```
 
+Создаём профиль isakmp для первой фазы.
+
+```
 crypto isakmp profile IKE-PROF-L2TP
 keyring KER-L2TP
 match identity address 0.0.0.0
 !
 ex
+```
 
+Создаём transform-set для второй  фазы.
+Mode `transport`, так как у нас L2TP тунель.
+
+```
 $c transform-set TRANS-L2TP esp-aes 128 esp-sha-hmac
 mode transport
 ex
+```
 
+Создаём динамическую криптокарту, чтобы обеспечить работу с изменяющимися пирами.
+```
 crypto dynamic-map DYN-MAP-L2TP 1
 set isakmp-profile IKE-PROF-L2TP
 set transform-set TRANS-L2TP
 ex
+```
 
+Указываем isakmp профиль transform set. Так как динамическую карту нельзя применить к интерфейсу, укажем дополнительно статическую карту.
+```
 crypto map CR-MAP-L2TP 1 ipsec-isakmp dynamic DYN-MAP-L2TP
 int e0/0
 crypto map CR-MAP-L2TP
@@ -197,6 +217,7 @@ wr
 
 ## Настройка IPsec подразделения
 
+Создаём политики.
 ```
 conf t
 crypto isakmp policy 1
@@ -205,21 +226,33 @@ authentication pre-share
 group 5
 hash sha
 ex
+```
 
+Создаём keyring с pre-shared ключом.
+```
 crypto keyring KER-L2TP
 pre-shared-key address 2.2.2.2 key secret
 ex
+```
 
+Создаём профиль isakmp с identity
+```
 crypto isakmp profile IKE-PROF-HQ
 keyring KER-HQ
 match identity address 2.2.2.2
 !
 ex
+```
 
+Создаём transform-set, также в транспортном режиме.
+```
 $c transform-set TRANS-HQ esp-aes 128 esp-sha-hmac
 mode transport
 ex
+```
 
+Создаём статическую криптокарту с внешним адресом главного офиса.
+```
 crypto map CR-MAP-HQ 1 ipsec-isakmp 
 set isakmp-profile IKE-PROF-HQ
 set transform-set TRANS-HQ
@@ -227,15 +260,24 @@ match address VPN-HQ
 peer
 set peer 2.2.2.2
 ex
+```
 
+Создаём access list с шифрованием трафика. L2TP работает поверх UDP.
+```
 ip access-list extended VPN-HQ
 permit udp host 1.1.1.2 eq 1701 host 2.2.2.2 eq 1701
 ex
+```
 
+Применим криптокарту к внешнему интерфейсу.
+```
 int e0/0
 crypto map CR-MAP-HQ
 end
+```
 
+Переустановка тунеля.
+```
 clear l2tp all
 wr
 ```
@@ -248,3 +290,5 @@ sh crypto ipsec sa
 sh ip route
 ping 172.16.1.1 
 ```
+
+Аналогично для других подразделений.
