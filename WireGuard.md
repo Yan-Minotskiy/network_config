@@ -4,11 +4,9 @@
 
 ### На Linux:
 
-# Лабораторная работа №9: Wireguard
-
 ### 1. Топология
 
-![Топология](https://github.com/Zeph1rr/Labs_web/blob/master/img/wg_top.png)
+![Топология](./image/wg_top.png)
 
 ***
 
@@ -29,15 +27,15 @@
   
   На WG-Server:
   
-  ![int_srv](https://github.com/Zeph1rr/Labs_web/blob/master/img/wg_int_srv.png)
+  ![int_srv](./image/wg_int_srv.png)
   
   На WG-Client:
   
-  ![int_cl](https://github.com/Zeph1rr/Labs_web/blob/master/img/wg_int_cl.png)
+  ![int_cl](./image/wg_int_cl.png)
   
   На Linux:
   
-  ![int_linux](https://github.com/Zeph1rr/Labs_web/blob/master/img/wg_int_linux.png)
+  ![int_linux](./image/wg_int_linux.png)
   
  Затем установим все необходимые пакеты:
  
@@ -113,11 +111,11 @@
   
   На WG-Server:
   
-  ![ip_srv](https://github.com/Zeph1rr/Labs_web/blob/master/img/wg_ip_srv.png)
+  ![ip_srv](./image/wg_ip_srv.png)
   
   На WG-Client:
   
-  ![ip_cl](https://github.com/Zeph1rr/Labs_web/blob/master/img/wg_ip_cl.png)
+  ![ip_cl](./image/wg_ip_cl.png)
   
 ***
 
@@ -143,4 +141,4 @@
   
   И теперь Linux так же имеет доступ в интернет через впн:
   
-  ![trace](https://github.com/Zeph1rr/Labs_web/blob/master/img/wg_trace.png)
+  ![trace](./image/wg_trace.png)
