@@ -12,6 +12,8 @@
 Выше представлены фрагменты статьи c Хабра.  
 [Полную статью можно посмотреть здесь.](https://habr.com/ru/company/dsec/blog/499718/)
 
+# На Cisco IoL
+
 [**Полезный видеоурок по настроке L2TP c IPsec**](https://youtu.be/N8qoleHxNmA)
 
 ## Подготовка стенда
@@ -292,3 +294,106 @@ ping 172.16.1.1
 ```
 
 Аналогично для других подразделений.
+
+***
+
+# На Linux:
+
+### L2TP + IPSec-over-l2tp:
+
+***
+
+### 1. Топология
+
+![Топология](https://github.com/Zeph1rr/Labs_web/blob/master/img/l2tp_top.png)
+
+***
+
+### 2. Устройства
+
+  - Выход в интернет
+  - Linux: linux-ubuntu-server-16.04, Ehthernets: 1 Количество: 1шт
+  - Linux: linux-ubuntu-desktop-16.04, Ehthernets: 1 Количество: 1шт
+  
+***
+
+### 3. Подготовка топологии к настройке
+
+Для начала настроим L2TP-Server, подключив их к интернету. Для этого изменим настройки интерфейсов:
+  ```
+  nano /etc/network/interfaces
+  ```
+  
+  ![int_srv](https://github.com/Zeph1rr/Labs_web/blob/master/img/l2tp_srv_int.png)
+  
+И обновим машину:
+
+  ```
+  sudo apt-get update
+  ```
+  
+А так же установим на L2TP-Client необходимые пакеты через терминал:
+
+  ```
+  sudo add-apt-repository ppa:nm-l2tp/network-manager-l2tp
+  sudo apt-get update
+  sudo apt-get install network-manager-l2tp network-manager-l2tp-gnome
+  ```
+  
+***
+
+### 4. Настройка L2TP и IPSec на сервере
+
+Перейдем к настройке L2TP сервера. Для этого воспользуемся скриптом. Скачаем его на на L2TP-Server с помощью команды:
+
+  ```
+  wget https://git.io/vpnsetup -O vpnsetup.sh
+  ```
+  
+  Затем отредактируем скачанный скрипт:
+  
+  ```
+  nano vpnsetup.sh
+  ```
+  
+  Придуем некоторый Pre-Shared key для шифрования (не менее 20 символов), а так же логин и пароль для клиента:
+  
+  ![int_srv](https://github.com/Zeph1rr/Labs_web/blob/master/img/l2tp_srv_vpn.png)
+  
+  Затем запустим выполнение данного скрипта. Он настроит сразу и L2TP и IPSec.
+  
+  ```
+  sh vpnsetup.sh
+  ```
+  
+  После выполнения скрипта перезапускаем машину:
+  
+  ```
+  reboot
+  ```
+  
+  После перезагрузки должен подняться интерфейс ppp0. Проверим командой:
+  
+  ```
+  ip a
+  ```
+  
+  ![int_srv](https://github.com/Zeph1rr/Labs_web/blob/master/img/l2tp_srv_ip.png)
+  
+  ***
+  
+### 5. Настройка L2TP и IPSec на клиенте
+  
+  Теперь переходим к настройке L2TP-Client. Заходим в сетевые настройки и добавляем новое подключение. Далее выбираем vpn, затем L2TP. После этого вводим
+  требуемую информацию:
+  
+  ![int_srv](https://github.com/Zeph1rr/Labs_web/blob/master/img/l2tp_cl_vpn.png)
+  
+  Затем переходим в настройки IPSec, вводим Pre-shared key и дополнительные настройки шифрования:
+  
+  ![int_srv](https://github.com/Zeph1rr/Labs_web/blob/master/img/l2tp_cl_ipsec.png)
+  
+  После чего сохраняем все настройки, активируем соединение и ждем до появления уведомления об удачном подключении.
+  Можем проверить, что выход в интернет теперь идет через VPN:
+  
+  ![int_srv](https://github.com/Zeph1rr/Labs_web/blob/master/img/l2tp_cl_trace.png)
