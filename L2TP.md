@@ -1,5 +1,11 @@
 # Лабораторные работы №4-5 - L2TP и L2TP over IPsec
 
+
+### Содержание:
+  1. [Теория](./L2TP.md/#L2TP)
+  2. [На Cisco](./L2TP.md/#Cisco)
+  3. [На Linux](./L2TP.md/#Linux)
+
 [**Все лабораторные работы по сетям и системам передачи данных**](./README.md)
 
 # L2TP 
@@ -12,7 +18,7 @@
 Выше представлены фрагменты статьи c Хабра.  
 [Полную статью можно посмотреть здесь.](https://habr.com/ru/company/dsec/blog/499718/)
 
-# На Cisco IoL
+# Cisco IoL
 
 [**Полезный видеоурок по настроке L2TP c IPsec**](https://youtu.be/N8qoleHxNmA)
 
@@ -297,7 +303,7 @@ ping 172.16.1.1
 
 ***
 
-# На Linux:
+# Linux:
 
 ### L2TP + IPSec-over-l2tp:
 
