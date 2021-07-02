@@ -30,7 +30,7 @@
 - [x] [**Лабораторная работа №6: IKEv2**](IKEv2.md)
 - [x] [**Лабораторная работа №7: OpenVPN-L3**](OpenVPN-L3.md)
 - [ ] [**Лабораторная работа №8: OpenVPN-L2**](OpenVPN-L2.md)
-- [ ] [**Лабораторная работа №9: WireGuard**](WireGuard.md)
+- [x] [**Лабораторная работа №9: WireGuard**](WireGuard.md)
 - [x] [**Лабораторная работа №10: MPLS**](MPLS.md)
 
 ---
