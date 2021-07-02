@@ -315,7 +315,7 @@ ping 172.16.1.1
 
 ### 1. Топология
 
-![Топология](https://github.com/Zeph1rr/Labs_web/blob/master/img/l2tp_top.png)
+![Топология](./image//l2tp_top.png)
 
 ***
 
@@ -334,7 +334,7 @@ ping 172.16.1.1
   nano /etc/network/interfaces
   ```
   
-  ![int_srv](https://github.com/Zeph1rr/Labs_web/blob/master/img/l2tp_srv_int.png)
+  ![int_srv](./image/l2tp_srv_int.png)
   
 И обновим машину:
 
@@ -368,7 +368,7 @@ ping 172.16.1.1
   
   Придуем некоторый Pre-Shared key для шифрования (не менее 20 символов), а так же логин и пароль для клиента:
   
-  ![int_srv](https://github.com/Zeph1rr/Labs_web/blob/master/img/l2tp_srv_vpn.png)
+  ![int_srv](./image/l2tp_srv_vpn.png)
   
   Затем запустим выполнение данного скрипта. Он настроит сразу и L2TP и IPSec.
   
@@ -388,7 +388,7 @@ ping 172.16.1.1
   ip a
   ```
   
-  ![int_srv](https://github.com/Zeph1rr/Labs_web/blob/master/img/l2tp_srv_ip.png)
+  ![int_srv](./image/l2tp_srv_ip.png)
   
   ***
   
@@ -397,13 +397,13 @@ ping 172.16.1.1
   Теперь переходим к настройке L2TP-Client. Заходим в сетевые настройки и добавляем новое подключение. Далее выбираем vpn, затем L2TP. После этого вводим
   требуемую информацию:
   
-  ![int_srv](https://github.com/Zeph1rr/Labs_web/blob/master/img/l2tp_cl_vpn.png)
+  ![int_srv](./image/l2tp_cl_vpn.png)
   
   Затем переходим в настройки IPSec, вводим Pre-shared key и дополнительные настройки шифрования:
   
-  ![int_srv](https://github.com/Zeph1rr/Labs_web/blob/master/img/l2tp_cl_ipsec.png)
+  ![int_srv](./image/l2tp_cl_ipsec.png)
   
   После чего сохраняем все настройки, активируем соединение и ждем до появления уведомления об удачном подключении.
   Можем проверить, что выход в интернет теперь идет через VPN:
   
-  ![int_srv](https://github.com/Zeph1rr/Labs_web/blob/master/img/l2tp_cl_trace.png)
+  ![int_srv](./image/l2tp_cl_trace.png)
