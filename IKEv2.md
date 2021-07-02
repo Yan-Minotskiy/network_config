@@ -77,6 +77,72 @@ tun mode ipsec ipv4
 tun protection ipsec profile PROF-UNITS
 ```
 
+## Настройка клиента
+
+```
+conf t
+crypto ikev2 proposal PROP-HQ
+enc aes-cbc-128
+integ sha256
+gr 5
+ex
+```
+
+Создаём политики
+```
+crypto ikev2 policy POL-HQ
+match fvrf any
+proposal PROP-HQ
+ex
+```
+
+Создаём keyring и указываем алрес сервера.
+```
+crypto ikev2 keyring KEYR-HQ
+peer HQ
+address 2.2.2.2
+pre-shared-key secret123
+ex
+ex
+```
+
+Создаём ikev2 профль
+```
+crypto ikev2 profile PROF-HQ
+match identity remote address 2.2.2.2
+identity local address 1.1.1.2
+authentication local pre-share
+keyring local KEYR-HQ
+ex
+```
+
+Создаём transform-set
+```
+crypto ipsec trans TRANS-HQ esp-aes 128 esp-sha256-hmac
+crypto ipsec profile PROF-HQ
+set trens TRANS-HQ
+set ikev2-profile PROF-HQ
+ex
+```
+
+Создаём loopback интерфейс и задаём ему адрес.
+```
+in lo 0
+ip add 172.16.1.2 255.255.255.0
+ex
+```
+
+Создаём тунельный интерфейс
+```
+int tun 0
+ip unnumbered lo0
+tun source fa0/0
+tun mode ipsec ipv4
+tun protection ipsec prof PROF-HQ
+tun des 2.2.2.2
+```
+
+Далее для того, чтобы была связь необходимо настроить [статическую](static_routing.md) или [динамическую маршрутизацию](RIP,%20OSPF.md).
 
 **Полезные источники:**  
 [Видеоурок по настройке](https://www.youtube.com/watch?v=S8TsZs89TQ0)  

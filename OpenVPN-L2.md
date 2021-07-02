@@ -137,6 +137,4 @@ See "systemctl status networking.service" and "journalctl -xe" for details.
 
 Поменять в файле `/etc/openvpn/server.conf` `dev tun` на `dev tap` так мы обозначаем работу на уровне L2. Удаляем строки с `push`.
 
-
-
-**! Не получается установить клиент OpenVPN. Остановился на 56 минуте видео.**
+**Проблема! Не получается установить клиент OpenVPN.**
