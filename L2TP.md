@@ -3,7 +3,7 @@
 
 ### Содержание:
   1. [Теория](./L2TP.md/#L2TP)
-  2. [На Cisco](./L2TP.md/#Cisco IoL)
+  2. [На Cisco](./L2TP.md/#Cisco)
   3. [На Linux](./L2TP.md/#Linux)
 
 [**Все лабораторные работы по сетям и системам передачи данных**](./README.md)
@@ -18,7 +18,7 @@
 Выше представлены фрагменты статьи c Хабра.  
 [Полную статью можно посмотреть здесь.](https://habr.com/ru/company/dsec/blog/499718/)
 
-# Cisco IoL
+# Cisco
 
 [**Полезный видеоурок по настроке L2TP c IPsec**](https://youtu.be/N8qoleHxNmA)
 
