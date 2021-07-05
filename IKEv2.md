@@ -145,6 +145,6 @@ tun des 2.2.2.2
 Далее для того, чтобы была связь необходимо настроить [статическую](static_routing.md) или [динамическую маршрутизацию](RIP,%20OSPF.md).
 
 **Полезные источники:**  
-[Видеоурок по настройке](https://www.youtube.com/watch?v=S8TsZs89TQ0)  
-[Документация CISCO](https://www.cisco.com/en/US/docs/ios-xml/ios/sec_conn_ikevpn/configuration/15-1mt/Configuring_Internet_Key_Exchange_Version_2.html)  
-[Обзор протоколов VPN](https://www.securevpn.pro/rus/blog/view/5?url=rus%2Fblog%2Fview%2F5)
+1. [Видеоурок по настройке](https://www.youtube.com/watch?v=S8TsZs89TQ0)  
+2. [Документация Cisco](https://www.cisco.com/en/US/docs/ios-xml/ios/sec_conn_ikevpn/configuration/15-1mt/Configuring_Internet_Key_Exchange_Version_2.html)  
+3. [Обзор протоколов VPN](https://www.securevpn.pro/rus/blog/view/5?url=rus%2Fblog%2Fview%2F5)
