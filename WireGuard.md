@@ -47,9 +47,9 @@
   На WG-Client:
   
   ```
-  deb http://deb.debian.org/debian buster-backports main" >/etc/apt/sources.list.d/backports.list
+  echo "deb http://deb.debian.org/debian buster-backports main" >/etc/apt/sources.list.d/backports.list
   apt-get update
-  apt-get install -y -t buster-backports wireguard
+  apt-get install -y -t buster-backports wireguard resolvconf
   ```
   
 ***
