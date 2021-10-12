@@ -138,3 +138,42 @@
   ![Putty to linux](image/LinuxPt2_LinuxPt2_SSHPuttyToLinux.png)
 
 ### SFTP
+
+	Настроим коннект по SFTP. Для этого скорректируем настройки нашего SSH сервера
+
+	```
+	sudo nano /etc/ssh/sshd_config
+	```
+
+	![SSHLinuxToLinux](image/LinuxPt2_SFTPConfig.png)
+
+	```
+	sudo systemctl restart ssh
+	```
+
+	Теперь создадим пользователя sftpuser и зададим ему соответствующую группу
+
+	```
+	groupadd sftp
+	useradd -m -s /bin/bash sftpuser
+	passwd sftpuser
+	usermod -aG sftp sftpuser
+	```
+
+	Пробуем подключиться с другого линукса и с помощью winscp:
+
+	#### Linux to Linux
+
+	![Linux to linux](image/LinuxPt2_SFTPLinuxToLinux.png)
+
+	#### WinSCP
+
+	![WinSCP](image/LinuxPt2_WinSCPConfig.png)
+
+	![WinSCP](image/LinuxPt2_WinSCPConnect.png)
+
+### Дополнительные материалы
+
+  - Установка и настройка сервера SSH в Linux | https://hackmd.io/@IgorLitvin/Hkz5b78MY
+  - Установка и настройка Putty | https://hackmd.io/@IgorLitvin/BJm5SfIMK
+  - Практическая работа по настройке SFTP | https://hackmd.io/@IgorLitvin/SkNncy27t
