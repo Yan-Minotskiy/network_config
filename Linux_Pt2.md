@@ -6,6 +6,11 @@
   - [Используемый стек](#Используемый)
   - [Задание](#Задание)
   - [Выполнение](#Выполнение)
+    - [Выделение диска](#Выделение)
+    - [Создание группы и пользователя, изменение прав доступа](#Создание)
+    - [SSH](#SSH)
+    - [SFTP](#SFTP)
+  - [Дополнительные материалы](#Дополнительные)
 
 
 ## Используемый стек
@@ -39,17 +44,18 @@
 
 	В первую очередь создаем диск в vmware. 
 
-	![AddDisk](image/LinuxPt2_AddDisk.png)
+![AddDisk](image/LinuxPt2_AddDisk.png)
 
 	Посмотрим, что мы имеем до всех настроек. Для этого посмотрим список дисков
-	```
-	 fdisk -l
-	```
-	![DiskBefore](image/LinuxPt2_DiskBefore.png)
+	
+```
+ fdisk -l
+```
+![DiskBefore](image/LinuxPt2_DiskBefore.png)
 
 	Отлично! Теперь начинаем выполнение задания. Для начала создадим папку в корне машины и примонируем в нее диск
 
-	```
+```
 	# Создаем дирикторию
 	sudo mkdir /data/
   # Делаем разметку диска
@@ -58,36 +64,35 @@
   sudo mount /dev/sdb /data
   # Проверяем, что диск успешно примонтирован
   df -h
-	```
-	![Mount](image/LinuxPt2_Mount.png)
-
+```
+![Mount](image/LinuxPt2_Mount.png)
 
 	Теперь нам нужно сделать так, чтобы при перезапуске системы диск оставался примонтированным в папку /data. Для этого нужно внести настройки в файлик /etc/fstab
 
-	```
+```
 	sudo echo  “/dev/sdb /data ext4 defaults 0 0" >> /etc/fstab	
-	```
+```
 
 ### Создание группы и пользователя, изменение прав доступа
 
 	Для начала создаем группу "CYB"
 
-	```
-	sudo groupadd CYB
-	```
+```
+sudo groupadd CYB
+```
 
 	Теперь создадим папку "23" и назначим ее на групу CYB
 
-	```
+```
 	# Создаем папку
 	sudo mkdir /data/23
 	# Изменяем группу
 	sudo chgrp CYB /data/23
-	```
+```
 
 	Создаем пользователя
 
-	```
+```
 	# Создать пользователя -m - создать домашню дирикторию -s - задать рабочую оболочку
 	sudo useradd -m -s /bin/bash valera 
 	# Задать пароль пользователю
@@ -98,81 +103,81 @@
 	ls -la /home/
 	# Изменяем права доступа в папку /data для отрицательного вывода ls. 700 - полные права у хозяина и никаких прав у остальных пользователей
 	sudo chmod 700 data 
-	```
+```
 
-	![HomeDir](image/LinuxPt2_HomeDir.png)
-	![ls -la](image/LinuxPt2_lsla.png)
+![HomeDir](image/LinuxPt2_HomeDir.png)
+![ls -la](image/LinuxPt2_lsla.png)
 
 
 ### SSH
 
   Для начала установим ssh сервер:
 
-  ```
-  sudo apt update && sudo apt install -y ssh
-  ```
+```
+	sudo apt update && sudo apt install -y ssh
+```
 
   Теперь нам нужно отредактировать конфиг ssh для дальнейшего использования, для этого зайдем в настройки конфигурации, сменим порт, разрешим только ipv4 семейство адресов и логин root пользователя
 
-  ```
-  sudo nano /etc/ssh/sshd_config
-  ```
+```
+	sudo nano /etc/ssh/sshd_config
+```
 
-  ![SSHD](image/LinuxPt2_SSHD.png)
+![SSHD](image/LinuxPt2_SSHD.png)
 
-  SSH сервер готов, применяем настройки и попробуем подключиться на него с другой linux машины и с основной системы через putty
+	SSH сервер готов, применяем настройки и попробуем подключиться на него с другой linux машины и с основной системы через putty
 
-  ```
-  sudo systemctl restart ssh
-  ```
+```
+	sudo systemctl restart ssh
+```
 
-  #### Linux to Linux
+#### Linux to Linux
    
-  ![SSHLinuxToLinux](image/LinuxPt2_SSHLinuxToLinux.png)
+![SSHLinuxToLinux](image/LinuxPt2_SSHLinuxToLinux.png)
 
 
-  #### Putty
+#### Putty
 
-  ![Putty config](image/LinuxPt2_PuttyConfig.png)
+![Putty config](image/LinuxPt2_PuttyConfig.png)
 
-  ![Putty to linux](image/LinuxPt2_LinuxPt2_SSHPuttyToLinux.png)
+![Putty to linux](image/LinuxPt2_LinuxPt2_SSHPuttyToLinux.png)
 
 ### SFTP
 
 	Настроим коннект по SFTP. Для этого скорректируем настройки нашего SSH сервера
 
-	```
+```
 	sudo nano /etc/ssh/sshd_config
-	```
+```
 
-	![SSHLinuxToLinux](image/LinuxPt2_SFTPConfig.png)
+![SSHLinuxToLinux](image/LinuxPt2_SFTPConfig.png)
 
-	```
+```
 	sudo systemctl restart ssh
-	```
+```
 
 	Теперь создадим пользователя sftpuser и зададим ему соответствующую группу
 
-	```
+```
 	groupadd sftp
 	useradd -m -s /bin/bash sftpuser
 	passwd sftpuser
 	usermod -aG sftp sftpuser
-	```
+```
 
 	Пробуем подключиться с другого линукса и с помощью winscp:
 
-	#### Linux to Linux
+#### Linux to Linux
 
-	![Linux to linux](image/LinuxPt2_SFTPLinuxToLinux.png)
+![Linux to linux](image/LinuxPt2_SFTPLinuxToLinux.png)
 
-	#### WinSCP
+#### WinSCP
 
-	![WinSCP](image/LinuxPt2_WinSCPConfig.png)
+![WinSCP](image/LinuxPt2_WinSCPConfig.png)
 
-	![WinSCP](image/LinuxPt2_WinSCPConnect.png)
+![WinSCP](image/LinuxPt2_WinSCPConnect.png)
 
-### Дополнительные материалы
+## Дополнительные материалы
 
   - Установка и настройка сервера SSH в Linux | https://hackmd.io/@IgorLitvin/Hkz5b78MY
   - Установка и настройка Putty | https://hackmd.io/@IgorLitvin/BJm5SfIMK
