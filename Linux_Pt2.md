@@ -134,7 +134,7 @@ SSH сервер готов, применяем настройки и попро
 
 ![Putty config](image/LinuxPt2_PuttyConfig.png)
 
-![Putty to linux](image/LinuxPt2_LinuxPt2_SSHPuttyToLinux.png)
+![Putty to linux](image/LinuxPt2_SSHPuttyToLinux.png)
 
 ### SFTP
 
