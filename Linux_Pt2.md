@@ -2,8 +2,8 @@
 
 
 ## Используемый стек
-  - VMWare Workstation
-  - Операционная система Linux Debian 11 консольная
+- VMWare Workstation
+- Операционная система Linux Debian 11 консольная
 
 ## Задание
 
@@ -35,30 +35,30 @@
 ![AddDisk](image/LinuxPt2_AddDisk.png)
 
 Посмотрим, что мы имеем до всех настроек. Для этого посмотрим список дисков
-	
+
 ```
-	fdisk -l
+fdisk -l
 ```
 ![DiskBefore](image/LinuxPt2_DiskBefore.png)
 
 Отлично! Теперь начинаем выполнение задания. Для начала создадим папку в корне машины и примонируем в нее диск
 
 ```
-	# Создаем дирикторию
-	sudo mkdir /data/
-  # Делаем разметку диска
-  sudo mkfs.ext4 /dev/sdb
-  # Монтируем диск в нашу папку
-  sudo mount /dev/sdb /data
-  # Проверяем, что диск успешно примонтирован
-  df -h
+# Создаем дирикторию
+sudo mkdir /data/
+# Делаем разметку диска
+sudo mkfs.ext4 /dev/sdb
+# Монтируем диск в нашу папку
+sudo mount /dev/sdb /data
+# Проверяем, что диск успешно примонтирован
+df -h
 ```
 ![Mount](image/LinuxPt2_Mount.png)
 
 Теперь нам нужно сделать так, чтобы при перезапуске системы диск оставался примонтированным в папку /data. Для этого нужно внести настройки в файлик /etc/fstab
 
 ```
-	sudo echo  “/dev/sdb /data ext4 defaults 0 0" >> /etc/fstab	
+sudo echo  “/dev/sdb /data ext4 defaults 0 0" >> /etc/fstab	
 ```
 
 ### Создание группы и пользователя, изменение прав доступа
@@ -72,25 +72,25 @@ sudo groupadd CYB
 Теперь создадим папку "23" и назначим ее на групу CYB
 
 ```
-	# Создаем папку
-	sudo mkdir /data/23
-	# Изменяем группу
-	sudo chgrp CYB /data/23
+# Создаем папку
+sudo mkdir /data/23
+# Изменяем группу
+sudo chgrp CYB /data/23
 ```
 
 Создаем пользователя
 
 ```
-	# Создать пользователя -m - создать домашню дирикторию -s - задать рабочую оболочку
-	sudo useradd -m -s /bin/bash valera 
-	# Задать пароль пользователю
-	sudo passwd valera
-	# Добавить пользователя в группу
-	sudo usermod valera -aG CYB
-	# Проверить наличие необходимой папки в домашней дириктории
-	ls -la /home/
-	# Изменяем права доступа в папку /data для отрицательного вывода ls. 700 - полные права у хозяина и никаких прав у остальных пользователей
-	sudo chmod 700 data 
+# Создать пользователя -m - создать домашню дирикторию -s - задать рабочую оболочку
+sudo useradd -m -s /bin/bash valera 
+# Задать пароль пользователю
+sudo passwd valera
+# Добавить пользователя в группу
+sudo usermod valera -aG CYB
+# Проверить наличие необходимой папки в домашней дириктории
+ls -la /home/
+# Изменяем права доступа в папку /data для отрицательного вывода ls. 700 - полные права у хозяина и никаких прав у остальных пользователей
+sudo chmod 700 data 
 ```
 
 #### Домашняя дириктория
@@ -108,13 +108,13 @@ sudo groupadd CYB
 Для начала установим ssh сервер:
 
 ```
-	sudo apt update && sudo apt install -y ssh
+sudo apt update && sudo apt install -y ssh
 ```
 
 Теперь нам нужно отредактировать конфиг ssh для дальнейшего использования, для этого зайдем в настройки конфигурации, сменим порт, разрешим только ipv4 семейство адресов и логин root пользователя
 
 ```
-	sudo nano /etc/ssh/sshd_config
+sudo nano /etc/ssh/sshd_config
 ```
 
 ![SSHD](image/LinuxPt2_SSHD.png)
@@ -122,11 +122,11 @@ sudo groupadd CYB
 SSH сервер готов, применяем настройки и попробуем подключиться на него с другой linux машины и с основной системы через putty
 
 ```
-	sudo systemctl restart ssh
+sudo systemctl restart ssh
 ```
 
 #### Linux to Linux
-   
+
 ![SSHLinuxToLinux](image/LinuxPt2_SSHLinuxToLinux.png)
 
 
@@ -141,22 +141,22 @@ SSH сервер готов, применяем настройки и попро
 Настроим коннект по SFTP. Для этого скорректируем настройки нашего SSH сервера
 
 ```
-	sudo nano /etc/ssh/sshd_config
+sudo nano /etc/ssh/sshd_config
 ```
 
 ![SSHLinuxToLinux](image/LinuxPt2_SFTPConfig.png)
 
 ```
-	sudo systemctl restart ssh
+sudo systemctl restart ssh
 ```
 
 Теперь создадим пользователя sftpuser и зададим ему соответствующую группу
 
 ```
-	groupadd sftp
-	useradd -m -s /bin/bash sftpuser
-	passwd sftpuser
-	usermod -aG sftp sftpuser
+groupadd sftp
+useradd -m -s /bin/bash sftpuser
+passwd sftpuser
+usermod -aG sftp sftpuser
 ```
 
 Пробуем подключиться с другого линукса и с помощью winscp:
@@ -173,6 +173,6 @@ SSH сервер готов, применяем настройки и попро
 
 ## Дополнительные материалы
 
-  - Установка и настройка сервера SSH в Linux | https://hackmd.io/@IgorLitvin/Hkz5b78MY
-  - Установка и настройка Putty | https://hackmd.io/@IgorLitvin/BJm5SfIMK
-  - Практическая работа по настройке SFTP | https://hackmd.io/@IgorLitvin/SkNncy27t
+- Установка и настройка сервера SSH в Linux | https://hackmd.io/@IgorLitvin/Hkz5b78MY
+- Установка и настройка Putty | https://hackmd.io/@IgorLitvin/BJm5SfIMK
+- Практическая работа по настройке SFTP | https://hackmd.io/@IgorLitvin/SkNncy27t
